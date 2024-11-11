@@ -17,12 +17,12 @@ Hamster Crossing is an interactive website that demonstrates two path-finding al
 🐹 Dijkstra's Algorithm: Explores all possible paths consistently. <br>
 
 ### Resource Allocation
-**Tools and Technologies**
+**Tools and Technologies** <br>
 	🌻 Frontend: HTML5, CSS3 <br>
 	🌻 Backend: JavaScript <br>
 	🌻 APIs/Frameworks: TBD <br>
 	🌻 Security Tools: TBD <br>
- **Required Resources**
+ **Required Resources** <br>
 	🌻 GitHub, IDEs for development <br>
 	🌻 Multimedia resources for integration <br>
 
