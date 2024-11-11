@@ -27,7 +27,7 @@ Hamster Crossing is an interactive website that demonstrates two path-finding al
 	🌻 Multimedia resources for integration <br>
 
 ### Success Criteria
-*The project will be successful if:* \n
-🎡 The web app accurately visualizes Dijkstra and A* algorithms. \n
-🎡 It meets performance, usability, and security standards. \n
-🎡 All deliverables (source code, documentation, presentation) are completed on time.\n
+*The project will be successful if:* <br>
+🎡 The web app accurately visualizes Dijkstra and A* algorithms. <br>
+🎡 It meets performance, usability, and security standards. <br>
+🎡 All deliverables (source code, documentation, presentation) are completed on time.<br>
