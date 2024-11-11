@@ -1,4 +1,4 @@
-# :hamster: :sunflower: Hamster Crossing :sunflower: :hamster:
+:hamster: :sunflower: Hamster Crossing :sunflower: :hamster:
 by Bitendo
 
 Team Members
