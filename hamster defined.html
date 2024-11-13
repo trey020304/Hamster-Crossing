@@ -26,14 +26,32 @@
         .start { background-color: lightblue; }
         .goal { background-color: lightgreen; }
         .wall { background-color: darkgray; }
+        #warning {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
+        #stopButton {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <h2>Pathfinding Animation: A* vs Dijkstra</h2>
+    <h2>Pathfinding: A* vs Dijkstra</h2>
     <div id="controls">
-        <button onclick="initializeGrid()">Generate New Grid</button>
-        <button onclick="runAlgorithms()">Run A* and Dijkstra</button>
+        <button id="runButton" onclick="runAlgorithms()">Run A* and Dijkstra</button>
     </div>
+    <button id="stopButton" onclick="stopSearching()">Stop Searching</button>
+    <div id="warning" style="display: none;">Searching is currently ongoing. Please wait...</div>
     <div id="grids">
         <div class="canvas-container">
             <h3>A* Algorithm</h3>
@@ -49,11 +67,14 @@
         const rows = 10;
         const cols = 10;
         const cellSize = 40;
+        const waitSecondsSearch = 100;
+        const waitSecondsPath = 200;
         const start = { x: 0, y: 0 };
-        const goal = { x: cols - 1, y: rows - 1 };
+        let searchInProgress = false;
+        let goal = { x: cols - 1, y: rows - 1 };  //goal is variable (for randomizing)
         let grid = [];
 
-        // Initialize canvases
+        //initialize canvases
         const aStarCanvas = document.getElementById("aStarCanvas");
         const dijkstraCanvas = document.getElementById("dijkstraCanvas");
         const aStarCtx = aStarCanvas.getContext("2d");
@@ -68,6 +89,19 @@
                 }
                 grid.push(row);
             }
+
+            // Randomize the goal location ensuring it's not the start or a wall
+            let goalPlaced = false;
+            while (!goalPlaced) {
+                const randomX = Math.floor(Math.random() * cols);
+                const randomY = Math.floor(Math.random() * rows);
+                if ((randomX !== start.x || randomY !== start.y) && !grid[randomY][randomX].wall) {
+                    goal = { x: randomX, y: randomY };
+                    goalPlaced = true;
+                }
+            }
+
+            // Set the start and goal positions
             grid[start.y][start.x].wall = false;
             grid[goal.y][goal.x].wall = false;
             drawGrid();
@@ -76,6 +110,7 @@
         function drawGrid() {
             aStarCtx.clearRect(0, 0, aStarCanvas.width, aStarCanvas.height);
             dijkstraCtx.clearRect(0, 0, dijkstraCanvas.width, dijkstraCanvas.height);
+
             for (const row of grid) {
                 for (const cell of row) {
                     if (cell.wall) {
@@ -87,14 +122,62 @@
                     } else {
                         aStarCtx.fillStyle = dijkstraCtx.fillStyle = "white";
                     }
+                    
+                    // Fill the cell background
                     aStarCtx.fillRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
                     dijkstraCtx.fillRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
+
+                    // Add a gray outline to each cell
+                    aStarCtx.strokeStyle = dijkstraCtx.strokeStyle = "gray";
+                    aStarCtx.strokeRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
+                    dijkstraCtx.strokeRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
                 }
             }
         }
 
+
+        // Handle grid click to toggle walls
+        function handleCanvasClick(event, ctx) {
+            const rect = ctx.canvas.getBoundingClientRect();
+            const x = Math.floor((event.clientX - rect.left) / cellSize);
+            const y = Math.floor((event.clientY - rect.top) / cellSize);
+
+            // Prevent toggling the start or goal cells
+            if ((x === start.x && y === start.y) || (x === goal.x && y === goal.y)) return;
+
+            // Toggle the wall property and redraw the grid
+            grid[y][x].wall = !grid[y][x].wall;
+            drawGrid();
+        }
+
+        // Add click event listeners to both canvases
+        aStarCanvas.addEventListener('click', (event) => handleCanvasClick(event, aStarCtx));
+        dijkstraCanvas.addEventListener('click', (event) => handleCanvasClick(event, dijkstraCtx));
+
         async function runAlgorithms() {
+            // Disable the button and show the warning
+            document.getElementById("runButton").disabled = true;
+            document.getElementById("warning").style.display = "block";
+            document.getElementById("stopButton").style.display = "inline-block"; // Show the stop button
+            searchInProgress = true;
+
             await Promise.all([animateAStar(), animateDijkstra()]);
+        }
+
+        function stopSearching() {
+            if (searchInProgress) {
+                // Stop the search and reset the grid
+                searchInProgress = false;
+                document.getElementById("runButton").disabled = false;
+                document.getElementById("warning").style.display = "none";
+                document.getElementById("stopButton").style.display = "none";	
+
+                //clear the grid and reset the paths on both canvases
+                aStarCtx.clearRect(0, 0, aStarCanvas.width, aStarCanvas.height);
+                dijkstraCtx.clearRect(0, 0, dijkstraCanvas.width, dijkstraCanvas.height);
+                    
+                drawGrid();
+            }
         }
 
         async function animateAStar() {
@@ -105,18 +188,19 @@
             const fScore = Array(rows).fill().map(() => Array(cols).fill(Infinity));
             fScore[start.y][start.x] = heuristic(start, goal);
 
-            while (openSet.length > 0) {
+            while (openSet.length > 0 && searchInProgress) {
                 openSet.sort((a, b) => fScore[a.y][a.x] - fScore[b.y][b.x]);
                 const current = openSet.shift();
 
                 if (current.x === goal.x && current.y === goal.y) {
-                    drawPath(cameFrom, current, aStarCtx, "yellow");
+                    await drawPathWithHead(cameFrom, current, aStarCtx, "yellow", "orange");
                     return;
                 }
 
+                // Draw explored cells without the head circle
                 aStarCtx.fillStyle = "lightyellow";
                 aStarCtx.fillRect(current.x * cellSize, current.y * cellSize, cellSize, cellSize);
-                await sleep(50);
+                await sleep(waitSecondsSearch); //Speed of searching
 
                 for (const neighbor of getNeighbors(current)) {
                     const tentativeGScore = gScore[current.y][current.x] + 1;
@@ -139,18 +223,19 @@
             const dist = Array(rows).fill().map(() => Array(cols).fill(Infinity));
             dist[start.y][start.x] = 0;
 
-            while (openSet.length > 0) {
+            while (openSet.length > 0 && searchInProgress) {
                 openSet.sort((a, b) => dist[a.y][a.x] - dist[b.y][b.x]);
                 const current = openSet.shift();
 
                 if (current.x === goal.x && current.y === goal.y) {
-                    drawPath(cameFrom, current, dijkstraCtx, "orange");
+                    await drawPathWithHead(cameFrom, current, dijkstraCtx, "orange", "red");
                     return;
                 }
 
+                // Draw explored cells without the head circle
                 dijkstraCtx.fillStyle = "lightcoral";
                 dijkstraCtx.fillRect(current.x * cellSize, current.y * cellSize, cellSize, cellSize);
-                await sleep(50);
+                await sleep(waitSecondsSearch); //Speed of searching
 
                 for (const neighbor of getNeighbors(current)) {
                     const newDist = dist[current.y][current.x] + 1;
@@ -166,6 +251,48 @@
             }
         }
 
+        async function drawPathWithHead(cameFrom, current, ctx, lineColor, headColor) {
+            const path = [];
+            while (cameFrom[`${current.x},${current.y}`]) {
+                path.push(current);
+                current = cameFrom[`${current.x},${current.y}`];
+            }
+            path.reverse();
+
+            for (let i = 0; i < path.length; i++) {
+                const cell = path[i];
+                
+                // Clear previous head (if any)
+                if (i > 0) {
+                    ctx.fillStyle = lineColor;
+                    const prevCell = path[i - 1];
+                    ctx.fillRect(prevCell.x * cellSize, prevCell.y * cellSize, cellSize, cellSize);
+                }
+
+                // Path cell
+                ctx.fillStyle = lineColor;
+                ctx.fillRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
+                
+                // Head circle
+                ctx.beginPath();
+                ctx.arc(
+                    cell.x * cellSize + cellSize / 2,
+                    cell.y * cellSize + cellSize / 2,
+                    cellSize / 2.5,
+                    0,
+                    2 * Math.PI
+                );
+                ctx.fillStyle = headColor;
+                ctx.fill();
+                
+                await sleep(waitSecondsPath); //speed of Circle and path
+
+                if (!searchInProgress) {
+                    return; //terminate line head if search is no longer in progress
+                }
+            }
+        }
+
         function heuristic(a, b) {
             return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
         }
@@ -177,14 +304,6 @@
             if (y > 0 && !grid[y - 1][x].wall) neighbors.push(grid[y - 1][x]);
             if (y < rows - 1 && !grid[y + 1][x].wall) neighbors.push(grid[y + 1][x]);
             return neighbors;
-        }
-
-        function drawPath(cameFrom, current, ctx, color) {
-            while (cameFrom[`${current.x},${current.y}`]) {
-                current = cameFrom[`${current.x},${current.y}`];
-                ctx.fillStyle = color;
-                ctx.fillRect(current.x * cellSize, current.y * cellSize, cellSize, cellSize);
-            }
         }
 
         function sleep(ms) {
