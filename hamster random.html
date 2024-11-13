@@ -72,16 +72,17 @@
         const waitSecondsPath = 200;
         const start = { x: 0, y: 0 };
         let searchInProgress = false;
-        let goal = { x: cols - 1, y: rows - 1 };  // Goal is now a variable to be randomized
+        let goal = { x: cols - 1, y: rows - 1 };  //goal is now a variable to be randomized
         let grid = [];
         
 
-        // Initialize canvases
+        //initialize canvases
         const aStarCanvas = document.getElementById("aStarCanvas");
         const dijkstraCanvas = document.getElementById("dijkstraCanvas");
         const aStarCtx = aStarCanvas.getContext("2d");
         const dijkstraCtx = dijkstraCanvas.getContext("2d");
 
+        //set behavior of grid
         function initializeGrid() {
             grid = [];
             for (let y = 0; y < rows; y++) {
@@ -92,7 +93,7 @@
                 grid.push(row);
             }
 
-            // Randomize the goal location ensuring it's not the start or a wall
+            //randomize the goal location (not start or wall)
             let goalPlaced = false;
             while (!goalPlaced) {
                 const randomX = Math.floor(Math.random() * cols);
@@ -103,12 +104,13 @@
                 }
             }
 
-            // Set the start and goal positions
+            //start and goal positions
             grid[start.y][start.x].wall = false;
             grid[goal.y][goal.x].wall = false;
             drawGrid();
         }
 
+        //visuals of grid
         function drawGrid() {
             aStarCtx.clearRect(0, 0, aStarCanvas.width, aStarCanvas.height);
             dijkstraCtx.clearRect(0, 0, dijkstraCanvas.width, dijkstraCanvas.height);
@@ -125,11 +127,11 @@
                         aStarCtx.fillStyle = dijkstraCtx.fillStyle = "white";
                     }
                     
-                    // Fill the cell background
+                    //cell background
                     aStarCtx.fillRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
                     dijkstraCtx.fillRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
 
-                    // Add a gray outline to each cell
+                    //grey outline on cells
                     aStarCtx.strokeStyle = dijkstraCtx.strokeStyle = "gray";
                     aStarCtx.strokeRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
                     dijkstraCtx.strokeRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
@@ -137,9 +139,9 @@
             }
         }
 
-
+        //run algorithms with await Promise.all (it should wait for processes to start and finish)
         async function runAlgorithms() {
-            // Disable the button and show the warning
+            //disable buttons with warning
             document.getElementById("runButton").disabled = true;
             document.getElementById("generateButton").disabled = true;
             document.getElementById("warning").style.display = "block";
@@ -151,14 +153,14 @@
 
             function stopSearching() {
                 if (searchInProgress) {
-                    // Stop the search and reset the grid
+                    //stop searching and reset grid
                     searchInProgress = false;
                     document.getElementById("runButton").disabled = false;
                     document.getElementById("generateButton").disabled = false;
                     document.getElementById("warning").style.display = "none";
                     document.getElementById("stopButton").style.display = "none";	
 
-                    //clear the grid and reset the paths on both canvases
+                    //clear grid
                     aStarCtx.clearRect(0, 0, aStarCanvas.width, aStarCanvas.height);
                     dijkstraCtx.clearRect(0, 0, dijkstraCanvas.width, dijkstraCanvas.height);
                     
@@ -166,7 +168,7 @@
                 }
             }
 
-
+            //functionality of A* algorithm
             async function animateAStar() {
                 const openSet = [start];
                 const cameFrom = {};
@@ -175,6 +177,7 @@
                 const fScore = Array(rows).fill().map(() => Array(cols).fill(Infinity));
                 fScore[start.y][start.x] = heuristic(start, goal);
 
+                //searchInProgress for debugging
                 while (openSet.length > 0 && searchInProgress) {
                     openSet.sort((a, b) => fScore[a.y][a.x] - fScore[b.y][b.x]);
                     const current = openSet.shift();
@@ -184,7 +187,7 @@
                         return;
                     }
 
-                    //draw explored cells without the head circle
+                    //explored cells
                     aStarCtx.fillStyle = "lightyellow";
                     aStarCtx.fillRect(current.x * cellSize, current.y * cellSize, cellSize, cellSize);
                     await sleep(waitSecondsSearch); //speed of searching
@@ -204,13 +207,14 @@
                 }
             }
 
-
+            //functionality of Dijkstra's algorithm
             async function animateDijkstra() {
                 const openSet = [start];
                 const cameFrom = {};
                 const dist = Array(rows).fill().map(() => Array(cols).fill(Infinity));
                 dist[start.y][start.x] = 0;
 
+                //searchInProgress for debugging
                 while (openSet.length > 0 && searchInProgress) {
                     openSet.sort((a, b) => dist[a.y][a.x] - dist[b.y][b.x]);
                     const current = openSet.shift();
@@ -220,7 +224,7 @@
                         return;
                     }
 
-                    //draw explored cells without the head circle
+                    //explored cells
                     dijkstraCtx.fillStyle = "lightcoral";
                     dijkstraCtx.fillRect(current.x * cellSize, current.y * cellSize, cellSize, cellSize);
                     await sleep(waitSecondsSearch); //speed of searching
@@ -239,7 +243,7 @@
                 }
             }
 
-
+        //functionality of object moving
         async function drawPathWithHead(cameFrom, current, ctx, lineColor, headColor) {
             const path = [];
             while (cameFrom[`${current.x},${current.y}`]) {
@@ -274,10 +278,10 @@
                 ctx.fillStyle = headColor;
                 ctx.fill();
                 
-                await sleep(waitSecondsPath); //speed of Circle and path
+                await sleep(waitSecondsPath); //speed of object moving on the grid
 
                 if (!searchInProgress) {
-                    return; //terminate line head if search is no longer in progress
+                    return; //terminate object if search is no longer in progress
                 }
             }
         }
