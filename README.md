@@ -4,7 +4,9 @@ by Bitendo
 ### Team Members
 🌻 Frontend Developer: [MA. FRANCEZCA L. RAMOS](https://github.com/ramosfranz) <br>
 🌻 Backend Developer: [MARK WILHELM TREVOR K. MARCOS](https://github.com/trey020304) <br>
-🌻 Project Manager/Fullstack Developer: CZYNON JOHN P. DE TORRES <br>
+🌻 Fullstack Developer: CZYNON JOHN P. DE TORRES <br>
+🌻 Project Manager: NUÑEZ, JUSTIN MAE T. <br>
+
 🌻 Instructor: Ms. Fatima Marie P. Agdon, MSCS <br>
 
 ### Project Dates
