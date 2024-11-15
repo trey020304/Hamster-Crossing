@@ -5,7 +5,7 @@ by Bitendo
 🌻 Frontend Developer: [MA. FRANCEZCA L. RAMOS](https://github.com/ramosfranz) <br>
 🌻 Backend Developer: [MARK WILHELM TREVOR K. MARCOS](https://github.com/trey020304) <br>
 🌻 Fullstack Developer: CZYNON JOHN P. DE TORRES <br>
-🌻 Project Manager: NUÑEZ, JUSTIN MAE T. <br>
+🌻 Project Manager: [NUÑEZ, JUSTIN MAE T.](https://github.com/jstnnz) <br>
 
 🌻 Instructor: Ms. Fatima Marie P. Agdon, MSCS <br>
 
