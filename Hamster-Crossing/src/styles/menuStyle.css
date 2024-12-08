@@ -52,12 +52,12 @@ html, body {
     image-rendering: pixelated;
 }
 
-.pixel-button:hover {
+.pixelButton:hover {
     background: linear-gradient(to bottom, #ffa9b8, #ff605f);
     border-color: #ff1a14;
 }
 
-.pixel-button:active {
+.pixelButton:active {
     transform: translateY(4px);
     box-shadow: 0 0 #000;
 }
