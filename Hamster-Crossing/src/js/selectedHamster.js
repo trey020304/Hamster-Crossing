@@ -168,8 +168,7 @@ hamsterImage.src = assets.character;
 const hamsterSpriteSheet = new Image();
 hamsterSpriteSheet.src = assets.sprite;
 
-
-const hueValue = assets.trailHue || 0; 
+const hueValue = assets.trailHue; 
 
 window.pathfindImages = [assets.pathfindImg1, assets.pathfindImg2];
 
