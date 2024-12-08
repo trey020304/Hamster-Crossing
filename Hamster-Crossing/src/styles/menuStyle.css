@@ -173,7 +173,7 @@ html, body {
 
 
 /* media queries for responsiveness */
-@media (max-width: 1384px) {
+@media (max-width: 1555px) {
     .scrollContainer {
         flex-direction: column;
         gap: 20px;
