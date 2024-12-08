@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10+Charted&family=Jersey+20&family=Jersey+25+Charted&display=swap" rel="stylesheet">
+    <title>Pathfinding Animation: A* vs Dijkstra</title>
+    <link rel="stylesheet" href="styles/pathfindStyle.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/hamusta favicon.ico">
+</head>
+<body>
+    <a id="backButton" href="hamsterMenu.html" class="pixel-button">Back to Menu</a>
+    
+    <!-- pathfinding logo depending on the selected hamster --> 
+    <div class="logoContainer">
+        <img id="pathfindLogo" src="assets/images/pathfinding_logos/pathfinding_hamu_1.png" alt="Logo">
+    </div>
+
+     <!-- control: run for user defined pathfinding --> 
+    <div id="controls">
+        <button class="pixelBtn" id="runButton" onclick="runAlgorithms()">Run A* and Dijkstra</button>
+        <button class="pixelBtn" id="generateButton" onclick="initializeGrid()">Generate New Grid</button>
+    </div>
+    <button id="stopButton" onclick="stopSearching()">Stop and Clear Searching</button>
+    <div id="warning" style="display: none;">Searching is currently ongoing. Please wait...</div>
+    
+    <!-- pathfinding canvases --> 
+    <div id="grids">
+        <div class="canvasContainer">
+            <h4 class="title">A*</h4>
+            <canvas id="aStarCanvas"  class="canva" width="400" height="400"></canvas>
+        </div>
+        <div class="canvasContainer">
+            <h4 class="title">Dijkstra</h4>
+            <canvas id="dijkstraCanvas" class="canva" width="400" height="400"></canvas>
+        </div>
+    </div>
+    <script src="js/selectedHamster.js"></script>
+    <script src="js/gridRandom.js"></script>
+    <script src="js/algorithm.js"></script>
+</body>
+</html>

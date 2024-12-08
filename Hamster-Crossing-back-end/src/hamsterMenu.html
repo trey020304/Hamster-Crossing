@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10+Charted&family=Jersey+20&family=Jersey+25+Charted&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/menuStyle.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/hamusta favicon.ico">
+    <title>Hamster Crossing</title>
+</head>
+<body>
+    <!-- home / main menu -->
+    <div class="home">
+        <img id="logo" src="assets/images/hamulogo.png" alt="logo">
+
+        <div class="menu">
+        <button class="pixelButton" id="openPopup">Choose a Hamster</button>
+        <button class="pixelButton" onclick="window.location.href='pathfindDefined.html'">Create Your Own Grid</button>
+        <button class="pixelButton" onclick="window.location.href='pathfindRandom.html';">Randomly Generate Grid</button>
+        <a href="#about"><button class="pixelButton" id="aboutButton" onclick="scrollToAbout()">About</button></a>
+        </div>  
+    </div>
+
+  <!-- hamster selection pop-up -->
+    <div class="popup" id="popup">
+        <div class="innerPopup">
+            <div class="popupHeader">
+                <h4>Choose your hamster!</h4>
+                <button id="closePopup">X</button>
+            </div>
+            <div class="hamsterSelection">
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_hamu.png" class="hcPic" id="hs_hamu"> <br>Hamu
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_merry.png" class="hcPic" id="hs_merry"> <br>Merry
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_berry.png" class="hcPic" id="hs_berry"> <br>Berry
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_mint.png" class="hcPic" id="hs_mint"> <br>Mint
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_UNKNOWN.png" class="hcPic" id="hs_hamuStar"> <span id="hamuStarName">???</span>
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_UNKNOWN.png" class="hcPic" id="hs_chiikawa"> <span id="chiikawaName">???</span>
+                </div>
+            </div>
+            <button class="popupBtn" id="rollButton">Roll</button>
+            <button class="popupBtn" id="chooseHamster" disabled>Choose a hamster</button>
+        </div>
+        
+        <!-- result pop-up -->
+        <div class="resultPopup" id="resultPopup">
+            <div class="resultBox">
+                <div class="popupHeader">
+                    <h4>Result</h4>
+                    <button id="closeResultPopup">X</button>
+                </div>
+                <div class="resultCard">
+                <p id="resultMessage"></p>
+                <img id="resultImage" class="hcPic" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  <!-- about section -->
+    <div id="about">
+        <div class="scrollContainer">
+            <div class="square">
+              <h3 id="squareTitle">About the Website</h3>
+              <p>
+                Welcome to Hamster Crossing, the most adorable way to explore our knowledge of algorithms! Here, you'll watch charming hamsters scurry through mazes, using advanced pathfinding techniques, the A* and Dijkstra's Algorithm. These little critters are on a mission to reach their ultimate prize—a tasty seed! But how they get there depends on the algorithm they follow. You'll get to see firsthand how speed and efficiency differ between these two methods in a fun, visual way.
+              </p>
+            </div>
+            
+            <div class="square">
+              <h3 id="squareTitle">About A*</h3>
+              <p>
+                The A* algorithm is a clever and efficient way for our little hamster friends to find the best path to their goal—the seed. It combines two key ideas: exploring promising paths and keeping track of costs to avoid wasting time on bad routes. The hamster begins at a starting position on the grid, evaluating neighboring cells to decide the next step. A* calculates the "cost" of each cell using two factors: the G Cost, which represents how far the hamster has traveled from the start, and the H Cost, which estimates how far the hamster is from the seed (using a straight-line distance or another heuristic). The total cost (F) is the sum of these: F = G + H.
+              </p>
+            </div>
+          
+            <div class="square">
+              <h3 id="squareTitle">About Dijkstra</h3>
+              <p>
+                The Dijkstra's Algorithm is another brilliant tool our hamsters use to navigate to the seed. It finds the shortest path by exploring all possible routes step by step. Starting at the initial position, the hamster assigns a "cost" of zero to this point and marks all other cells as having infinite cost. As it moves, it updates the costs of neighboring cells based on the shortest distance from the start. The algorithm explores the grid by selecting the cell with the smallest cost that hasn’t been visited yet, recalculating neighbors' costs if shorter paths are found. This continues until every cell is evaluated or the hamster reaches the seed.
+              </p>
+            </div>
+          </div>
+          
+        <!-- hamster falling animation -->
+        <img id="hamster" src="public/hamster_falling/hamu_fall1.png" alt="Hamster Falling">
+    </div>
+    <script src="js/selectedHamster.js"></script>
+    <script src="js/menu.js"></script>
+</body>
+</html>

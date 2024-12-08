@@ -1,0 +1,420 @@
+html, body {
+    font-family: "Jersey 20", sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    scroll-behavior: smooth;
+    background-image:url(public/bg_stars.gif), url(public/bg_flower.gif), url(public/bg_pinkCheckers.png);
+    background-size: auto, auto, 20%;
+    background-repeat: auto, auto, space;
+    image-rendering: pixelated;
+}
+/* for home / main menu */
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    height: 100%;
+    text-align: center;
+}
+
+#logo {
+    width: 40%;
+    max-height: 100%; 
+    margin-bottom: 0.5%;
+    image-rendering: pixelated;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px; 
+}
+
+.pixelButton {
+    padding: 10px 5%;
+    margin-bottom: 3%;
+    font-size: 1.5rem;
+    color: #fff;
+    border: 5px solid #ff8e1c;
+    border-radius: 4px;
+    background: linear-gradient(to bottom, #f9a65a, #ffbc80);
+    box-shadow: 
+        0 0 0 3px #fff, 
+        0 6px #d36102;
+    cursor: pointer;
+    text-align: center;
+    font-family: "Jersey 20", sans-serif;
+    width: 100%;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    image-rendering: pixelated;
+}
+
+.pixel-button:hover {
+    background: linear-gradient(to bottom, #ffa9b8, #ff605f);
+    border-color: #ff1a14;
+}
+
+.pixel-button:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 #000;
+}
+
+/* for responsiveness */
+@media (max-width: 700px) {
+    #logo {
+        width: 90%;
+        max-width: 100%;
+    }
+
+    .pixel-button {
+        font-size: 1rem;
+        padding: 8px;
+    }
+
+    .menu {
+        margin: 0% 10% 0% 10%;
+    }
+
+    #hamster {
+        width: 30%;
+    }
+}
+
+/* falling hamster animation*/
+#hamster {
+    position: absolute;
+    width: 13%;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: hamsterFall 5s linear forwards, hamsterFrame 0.5s steps(2) infinite;
+    image-rendering: pixelated;
+}
+
+@keyframes hamsterFall {
+    0% {
+        top: -90vh;
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    95% {
+        opacity: 1;
+    }
+    100% {
+        top: calc(100vh - 5vh);
+        opacity: 0;
+    }
+}
+
+@keyframes hamsterFrame {
+    0% {
+        content: url('public/hamster_falling/hamu_fall1.png');
+    }
+    50% {
+        content: url('public/hamster_falling/hamu_fall2.png');
+    }
+    100% {
+        content: url('public/hamster_falling/hamu_fall1.png');
+    }
+}
+
+/* about section */
+#about {
+    height: 100vh; 
+    text-align: center;
+    position: relative;
+    color:white;
+}
+
+.scrollContainer {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    overflow-x: auto;
+    gap: 2%;
+    padding: 1%;
+    height: 100%; 
+}
+
+
+.square {
+    width: clamp(400px, 40vw, 600px); /* responsiveness for squares */
+    background-color: #f4a261;
+    border: 5px solid #ff8e1c;
+    border-radius: 4px;
+    box-shadow: 
+        0 0 0 3px #fff,
+        0 6px #d36102; 
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center; 
+    height: auto; 
+}
+
+.square h3 {
+    font-size: 2rem;
+    margin: 0 0 30px 0; 
+    text-align: center;
+}
+
+.square p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+
+/* media queries for responsiveness */
+@media (max-width: 1384px) {
+    .scroll-container {
+        flex-direction: column;
+        gap: 20px;
+        overflow-x: unset;
+    }
+
+    .square {
+        width: 90%;
+    }
+
+    .square h3 {
+        font-size: 1.8rem;
+    }
+
+    .square p {
+        font-size: 1.3rem;
+    }
+
+    #hamster {
+        width: 30%;
+    }
+}
+
+
+/* pop up */
+h4 {
+    color: white;
+    font-size: 200%;
+    margin: 1%;
+}
+
+.hamsterSelection {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 1%; 
+    width: 100%; 
+    
+}
+
+.hamsterChoice {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
+    flex-grow: 1; 
+    box-sizing: border-box;
+    padding: 10px; 
+}
+
+/* pop-up styles */
+.popup {
+    background-color: rgba(0, 0, 0, 0.2);
+    position: fixed;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: all 0.3s ease-in-out;
+    z-index: -1;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup.open {
+    opacity: 1;
+    z-index: 999;
+}
+
+.innerPopup {
+    background-image: url(public/bg_try10.png);
+    background-color: #ffc690;
+    border: 5px solid #fee7e8;
+    color: #fb5000;
+    font-size: 2rem;
+    box-sizing: border-box;
+    width: 60%;
+    justify-self: center;
+    align-items: center;
+}
+
+.hcPic {
+    width: 50%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+/* hover effect for hamster images */
+.hcPic:hover {
+    animation: pulse 1.5s infinite ease-in-out;
+    image-rendering: pixelated;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* low saturation effect */
+.hcPic.low-saturation {
+    filter: saturate(0.2); 
+}
+
+/* media queries for the hamster selection pop up*/
+@media (min-width: 1024px) {
+    .hamsterChoice {
+        flex: 1 0 30%; /* 3 items in one line (30% per item) */
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 700px) {
+    .hamsterChoice {
+        flex: 1 0 45%; /* 2 items in one line (45% per item) */
+    }
+}
+
+@media (max-width: 700px) {
+    .hamster-choice {
+        flex: 1 0 80%; /* 1 item in one line (80% per item) */
+    }
+}
+
+.popupHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    position: relative;
+    font-size: 1rem;
+}
+
+.popupHeader h4 {
+    margin: 0;
+    font-size: 4.3rem;
+    text-align: center;
+    flex-grow: 1;
+}
+
+#closePopup {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 4rem;
+    cursor: pointer;
+    color: white;
+    font-family: "Jersey 20", sans-serif;
+}
+
+.popupBtn {
+    padding: 10px 5%;
+    margin: 2%;
+    font-size: 1.5rem;
+    color: #fff;
+    border: 5px solid #ff8e1c;
+    border-radius: 4px;
+    background: linear-gradient(to bottom, #f9a65a, #ffbc80);
+    box-shadow: 
+        0 0 0 3px #fff, /* White outer stroke */
+        0 8px #d36102; /* Original shadow */
+    cursor: pointer;
+    text-align: center;
+    font-family: "Jersey 20", sans-serif;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    image-rendering: pixelated;
+}
+
+.popupBtn:hover {
+    background: linear-gradient(to bottom, #ffa9b8, #ff605f);
+    border-color: #ff1a14;
+}
+
+.popupBtn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 #000;
+}
+
+/* result popup */
+.resultPopup {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;  /* initially hidden */
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.resultPopup .resultBox {
+    background-color: #ffc690;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.resultCard {
+    display: flex; /* Arrange items in a row */
+    flex-direction: row; /* Default for flex, ensures horizontal alignment */
+    align-items: center; /* Vertically align items */
+    justify-content: center; /* Horizontally center the items */
+    gap: 10px; /* Add spacing between the message and image */
+}
+
+#resultMessage {
+    font-size: 1.2rem;
+    margin: 0;
+    text-align: left;
+}
+
+#resultPopup img {
+    width: 20%;
+    height: auto; 
+    margin: 0; 
+}
+
+#closeResultPopup {
+    background: none;
+    border: none;
+    font-size: 3rem;
+    cursor: pointer;
+    color: white;
+}
+
+
