@@ -15,8 +15,6 @@ const visitedCells = [];
 const sparkleFrames = [];
 const totalFrames = 8;
 const fillColor = "rgba(255, 127, 80, 0.5)";
-localStorage.setItem("hueValue", hueValue);
-
 
 // initialize sparkle frames for the trail animation
 for (let i = 0; i < totalFrames; i++) {
@@ -37,8 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // apply background change (change the body background image)
     document.body.style.backgroundImage = `${assets.background}, ${assets.background}`;
-
-    localStorage.setItem("hueValue", hueValue);
 
     // apply the background music
     console.log("Background image set to:", assets.background);
@@ -193,8 +189,7 @@ async function handleCellDrawing(cell, index, path, scaledWidth, scaledHeight, f
 
 }
 
-function drawSparkles(ctx, algorithm) {
-    if ((algorithm === "A*" && !aStarComplete) || (algorithm === "Dijkstra" && !dijkstraComplete)) {
+function drawSparkles(ctx) {
         ctx.save();
 
         ctx.filter = `hue-rotate(${hueValue}deg)`;
@@ -216,7 +211,6 @@ function drawSparkles(ctx, algorithm) {
         //restore the canvas state
         ctx.restore();
     }
-}
 
 // handles sparkle animation
 function startSparkleAnimation(ctx) {
@@ -550,4 +544,3 @@ function stopSearching() {
     }
     
 }
-
