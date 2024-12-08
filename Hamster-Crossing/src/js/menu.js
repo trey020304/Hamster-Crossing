@@ -254,6 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
         spriteSheet.src = assets.ground;
         hamsterImage.src = assets.character;
         hamsterSpriteSheet.src = assets.sprite;
+        const hueValue = assets.trailHue || 0; 
         console.log("Hue value used:", hueValue);
         // for verification 
         console.log("Assets applied successfully.");
